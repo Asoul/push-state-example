@@ -26,6 +26,7 @@
       counter += 1
       document.querySelector("#counter").innerHTML = counter
       document.querySelector('#history').innerHTML = history.length
+
       var stateObj = { counter: counter }
       history.pushState(stateObj, "page " + counter, "")
       console.log("pushstate state: " + JSON.stringify(stateObj))
@@ -34,9 +35,16 @@
       console.log("popstate state: " + JSON.stringify(event.state))
       if (event.state) {
         var popedCounter = event.state.counter
+        counter = popedCounter
         document.querySelector("#counter").innerHTML = popedCounter
         document.querySelector('#history').innerHTML = history.length
-        counter = popedCounter  
+      }
+    }
+    window.onload = function() {
+      if (history.state && history.state.counter) {
+        counter = history.state.counter
+        document.querySelector("#counter").innerHTML = history.state.counter
+        document.querySelector('#history').innerHTML = history.length  
       }
     }
   </script>
