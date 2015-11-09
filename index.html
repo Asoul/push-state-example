@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Push State Example</title>
+  <style>
+  body {
+    text-align: center;
+  }
+  button {
+    font-size: 30px;
+    border-radius: 5px;
+  }
+  </style>
+</head>
+<body>
+  <h1>利用 history.pushState 不更動 url 就可以操縱 history</h1>
+  <hr>
+  <h2>counter = <span id="counter">0</span></h2>
+  <h2>history.length = <span id="history"></span></h2>
+  <button onclick="next()">Add Counter</button>
+  <script>
+    var counter = 0
+    document.querySelector('#history').innerHTML = history.length
+    var next = function() {
+      counter += 1
+      document.querySelector("#counter").innerHTML = counter
+      document.querySelector('#history').innerHTML = history.length
+      var stateObj = { counter: counter }
+      history.pushState(stateObj, "page " + counter, "")
+      console.log("pushstate state: " + JSON.stringify(stateObj))
+    }
+    window.onpopstate = function(event) {
+      console.log("popstate state: " + JSON.stringify(event.state))
+      if (event.state) {
+        var popedCounter = event.state.counter
+        document.querySelector("#counter").innerHTML = popedCounter
+        document.querySelector('#history').innerHTML = history.length
+        counter = popedCounter  
+      }
+    }
+  </script>
+</body>
+</html>
